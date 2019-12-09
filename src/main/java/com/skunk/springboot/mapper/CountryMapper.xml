@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skunk.springboot.mapper.CountryMapper">
+  <resultMap id="BaseResultMap" type="com.skunk.springboot.model.Country">
+    <constructor>
+      <idArg column="c_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_countryname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_capital" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    c_id, c_countryname, c_capital
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from country
+    where c_id = #{cId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from country
+    where c_id = #{cId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.skunk.springboot.model.Country">
+    insert into country (c_id, c_countryname, c_capital
+      )
+    values (#{cId,jdbcType=INTEGER}, #{cCountryname,jdbcType=VARCHAR}, #{cCapital,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.skunk.springboot.model.Country">
+    insert into country
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="cCountryname != null">
+        c_countryname,
+      </if>
+      <if test="cCapital != null">
+        c_capital,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="cCountryname != null">
+        #{cCountryname,jdbcType=VARCHAR},
+      </if>
+      <if test="cCapital != null">
+        #{cCapital,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.skunk.springboot.model.Country">
+    update country
+    <set>
+      <if test="cCountryname != null">
+        c_countryname = #{cCountryname,jdbcType=VARCHAR},
+      </if>
+      <if test="cCapital != null">
+        c_capital = #{cCapital,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.skunk.springboot.model.Country">
+    update country
+    set c_countryname = #{cCountryname,jdbcType=VARCHAR},
+      c_capital = #{cCapital,jdbcType=VARCHAR}
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+</mapper>
